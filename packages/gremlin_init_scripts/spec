@@ -1,0 +1,5 @@
+---
+name: gremlin_init_scripts
+dependencies: []
+files:
+- gremlin_init_scripts/etc/init.d/gremlind

@@ -1,0 +1,7 @@
+check process gremlind
+  with pidfile /var/run/gremlind.pid
+  start program "/var/vcap/jobs/gremlind/bin/start-gremlind.sh"
+    with timeout 600 seconds
+  stop program "/var/vcap/jobs/gremlind/bin/stop-gremlind.sh"
+    with timeout 120 seconds
+  group gremlin

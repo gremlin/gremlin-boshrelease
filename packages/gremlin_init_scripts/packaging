@@ -1,0 +1,3 @@
+set -e
+
+cp gremlin_init_scripts/etc/init.d/gremlind /etc/init.d/gremlind

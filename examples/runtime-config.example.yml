@@ -1,0 +1,18 @@
+releases:
+- name: bosh-gremlin
+  version: 0+dev.48
+
+addons:
+- name: bosh-gremlin-addon
+  jobs:
+  - name: gremlind
+    release: bosh-gremlin
+  include:
+    stemcell:
+      - os: ubuntu-trusty
+  properties:
+    gremlin:
+      service_url: https://api.gremlin.com/v1
+      team_id: REDACTED-BUT-IT-LOOKS-LIKE-A-HASH
+      team_secret: REDACTED-BUT-IT-LOOKS-LIKE-A-HASH
+      hosttags: []

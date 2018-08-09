@@ -1,0 +1,23 @@
+---
+name: gremlind
+description: "This job will run gremlind on Linux"
+
+templates:
+  pre-start.erb: bin/pre-start
+  start-gremlind.sh.erb: bin/start-gremlind.sh
+  stop-gremlind.sh.erb: bin/stop-gremlind.sh
+
+packages: 
+  - gremlin_init_scripts
+
+properties:
+  gremlin.service_url:
+    description: 'Gremlin API URL - must change to target staging'
+  gremlin.team_id:
+    description: 'Gremlin team id for login to service'
+  gremlin.team_secret:
+    description: 'Gremlin team secret key for login to service'
+  gremlin.hosttags:
+    description: 'Host tags for this VM. TODO: figure out how to take a list from YAML and pass it to gremlin init --tag= --tag= --tag='
+    default: ''
+    example: landscape=production team=my_team

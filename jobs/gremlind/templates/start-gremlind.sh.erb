@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# source environment variables for gremlind
+[ -f /etc/default/gremlind ] && . /etc/default/gremlind
+
+gremlindInitScript="/etc/init.d/gremlind"
+
+checkForInstaller
+
+if [[ -f "${gremlindInitScript}" ]]; then
+    "${gremlindInitScript}" start
+else
+    echo "ERROR: ${gremlinInitScript} not found!"
+    exit 1
+fi

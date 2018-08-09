@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# fail fast on first error
+set -eo pipefail
+
+echo `date`
+
+# stage all gremlin env vars in a shared file for reuse in other contexts
+echo STORING GREMLIN ENV VARS IN /etc/default/gremlind
+
+echo export GREMLIN_SERVICE_URL="<%= p("gremlin.service_url") %>"  >  /etc/default/gremlind
+echo export GREMLIN_TEAM_ID="<%= p("gremlin.team_id") %>"          >> /etc/default/gremlind
+echo export GREMLIN_TEAM_SECRET="<%= p("gremlin.team_secret") %>"  >> /etc/default/gremlind
+echo export GREMLIN_IDENTIFIER=`hostname` >> /etc/default/gremlind
+
+# load our environment variables from previous step
+. /etc/default/gremlind
+
+export PATH="/var/vcap/packages/gremlin:$PATH"
+
+export TMPDIR="/var/vcap/data/dt_tmp"
+
+CONFIG_DIR="/var/lib/gremlin/gremlin/agent/config"
+RUN_DIR="/var/vcap/sys/run/gremlin"
+LOG_DIR="/var/vcap/sys/log/gremlin"
+LOG_FILE="$LOG_DIR/gremlin-install.log"
+
+fetch-binaries() {
+    echo Downloading gremlin and gremlind binaries
+    # cheat and use a pre-loaded copy of the binaries to save install time for dev
+    cp /var/vcap/store/gremlin/bin/* .
+
+    # TODO: uncomment the below curls and stop cheating
+    #curl https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
+    #curl https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
+}
+
+place-binaries() {
+    echo Copying gremlin binaries into desired locations
+    install --owner gremlin --group gremlin --mode 6111 gremlin /usr/bin/
+    install --owner gremlin --group gremlin --mode 6111 gremlind /usr/sbin/
+
+    # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
+    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
+}
+
+upload-gremlind-init-script() {
+    echo Setting permissions on init script
+    # this file should have been copied in via the "gremlin_init_scripts" package listed in jobs/gremlind/spec
+    chmod 755 /etc/init.d/gremlind
+}
+
+run-gremlin-init() {
+    echo Initializing gremlin client credentials and tags
+    gremlin init # creates file at /var/lib/gremlin/.credentials
+}
+
+create-user() {
+    # create only if not already created
+    id -u gremlin &>/dev/null || useradd --system --user-group --home /var/lib/gremlin gremlin
+
+    groups gremlin | grep &>/dev/null "gremlin$" || usermod -aG gremlin
+}
+
+prepare-file-system() {
+    mkdir -p /var/lib/gremlin
+    mkdir -p /var/log/gremlin
+    chown -R gremlin:gremlin /var/lib/gremlin
+    chown -R gremlin:gremlin /var/log/gremlin
+}
+
+create-user
+fetch-binaries
+place-binaries
+prepare-file-system
+upload-gremlind-init-script
+run-gremlin-init
