@@ -45,5 +45,3 @@ monit status # see if gremlind is up
 # run basic localhost checks
 gremlin syscheck
 ```
-
-## Quick overview on what B
