@@ -8,15 +8,37 @@ Please contact support@gremlin.com with any questions or comments.
 
 ## Dev setup
 
-- install cf client
-- install cf dev plugin for cf CLI client
-- start up a new cf dev cluster
+Install cf client:
+
+`brew install cloudfoundry/tap/cf-cli`
+
+Install cf dev plugin for cf CLI client:
+NOTE: cf-dev currently only works on Mac.
+
+`cf install-plugin -r CF-Community "cfdev"`
+
+Start up a new cf dev cluster:
+
+`cf dev start`
+
+Export bosh environment variables:
+
+```
+eval "$(cf dev bosh env)"
+export BOSH_ENVIRONMENT=cf
+```
+
+Confirm your BOSH connection to cf:
+
+`bosh instances` should list all running BOSH VMs.
 
 ## Run me
 
-- upload this repo to bosh via `bosh upload-release`
-- update a bosh runtime config that references this repo
-- redeploy bosh to activate the runtime config that uses this latest gremlin addon
+- Upload this repo to bosh via `bosh upload-release`
+- Update a bosh runtime config that references this repo (see `examples/runtime-config.example.yml` for a starting point, don't forget to update your own Gremlin team ID and team secret)
+- Redeploy bosh to activate the runtime config that uses this latest gremlin addon
+
+One-liner available at `make deploy_full`
 
 ## Monitoring and health checks
 
