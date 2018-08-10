@@ -1,6 +1,7 @@
 releases:
-- name: bosh-gremlin
-  version: 0+dev.48
+- name: gremlin
+  git: https://github.com/gremlin/gremlin-boshrelease
+  version: 0.1.3
 
 addons:
 - name: bosh-gremlin-addon
