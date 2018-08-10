@@ -1,14 +1,11 @@
 #!/bin/bash
 
 gremlindInitScript="/etc/init.d/gremlind"
-INSTALLED_BIN="/usr/sbin/gremlind"
 
 if [[ -f "${gremlindInitScript}" ]]; then
     "${gremlindInitScript}" stop
-elif [[ ! -d "${INSTALLED_BIN}" ]]; then
-    echo "Gremlin Daemon already uninstalled"
     exit 0
 else
-    echo "ERROR: ${gremlindInitScript} not found!"
+    echo "ERROR: ${gremlinInitScript} not found!"
     exit 1
 fi

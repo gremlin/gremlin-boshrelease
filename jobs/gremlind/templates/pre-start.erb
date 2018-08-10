@@ -6,19 +6,18 @@ set -eo pipefail
 echo `date`
 
 # stage all gremlin env vars in a shared file for reuse in other contexts
-echo STORING GREMLIN ENV VARS IN /etc/default/gremlind
+echo STORING GREMLIN ENV VARS IN /etc/default/gremlind | tee 
 
 echo export GREMLIN_SERVICE_URL="<%= p("gremlin.service_url") %>"  >  /etc/default/gremlind
 echo export GREMLIN_TEAM_ID="<%= p("gremlin.team_id") %>"          >> /etc/default/gremlind
 echo export GREMLIN_TEAM_SECRET="<%= p("gremlin.team_secret") %>"  >> /etc/default/gremlind
 echo export GREMLIN_IDENTIFIER=`hostname` >> /etc/default/gremlind
+echo export GREMLIN_TAGS="<%= p("gremlin.hosttags").map(&:to_list).join(",") %>"  >> /etc/default/gremlind
 
 # load our environment variables from previous step
 . /etc/default/gremlind
 
 export PATH="/var/vcap/packages/gremlin:$PATH"
-
-export TMPDIR="/var/vcap/data/dt_tmp"
 
 CONFIG_DIR="/var/lib/gremlin/gremlin/agent/config"
 RUN_DIR="/var/vcap/sys/run/gremlin"
@@ -28,11 +27,11 @@ LOG_FILE="$LOG_DIR/gremlin-install.log"
 fetch-binaries() {
     echo Downloading gremlin and gremlind binaries
     # cheat and use a pre-loaded copy of the binaries to save install time for dev
-    cp /var/vcap/store/gremlin/bin/* .
+    #cp /var/vcap/store/gremlin/bin/* .
 
     # TODO: uncomment the below curls and stop cheating
-    #curl https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
-    #curl https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
+    curl https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
+    curl https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
 }
 
 place-binaries() {
