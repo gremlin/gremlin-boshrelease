@@ -43,4 +43,5 @@ final_release:
 	git add releases/gremlin
 	git commit -m "Release $(VERSION)"
 	git tag -f -a $(VERSION) -m "Release $(VERSION)"
+	git push
 	git push --tags
