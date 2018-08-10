@@ -12,7 +12,6 @@ echo export GREMLIN_SERVICE_URL="<%= p("gremlin.service_url") %>"  >  /etc/defau
 echo export GREMLIN_TEAM_ID="<%= p("gremlin.team_id") %>"          >> /etc/default/gremlind
 echo export GREMLIN_TEAM_SECRET="<%= p("gremlin.team_secret") %>"  >> /etc/default/gremlind
 echo export GREMLIN_IDENTIFIER=`hostname` >> /etc/default/gremlind
-echo export GREMLIN_TAGS="<%= p("gremlin.hosttags").map(&:to_list).join(",") %>"  >> /etc/default/gremlind
 
 # load our environment variables from previous step
 . /etc/default/gremlind
