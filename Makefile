@@ -1,4 +1,4 @@
-VERSION=0.1.4
+VERSION=0.1.5
 RELEASE_YML = $(shell ls -t dev_releases/bosh-gremlin/bosh*yml | head -1)
 RELEASE_VERSION = $(shell echo $(RELEASE_YML) | ruby -e "puts gets.split('/').last.gsub(/.yml$$/, '').split('-').last")
 
@@ -35,8 +35,9 @@ logs:
 	bosh ssh database "sudo tail -f /var/vcap/sys/log/gremlind/*log"
 
 final_release:
-	git tag -f -a $(VERSION) -m "Release $(VERSION)"
-	git push
 	bosh create-release --final \
 		--tarball=gremlin_$(VERSION).tgz \
 		--version=$(VERSION)
+	git commit -am "Release $(VERSION)"
+	git tag -f -a $(VERSION) -m "Release $(VERSION)"
+	git push --tags
