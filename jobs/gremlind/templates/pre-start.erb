@@ -45,6 +45,7 @@ place-binaries() {
 upload-gremlind-init-script() {
     echo Setting permissions on init script
     # this file should have been copied in via the "gremlin_init_scripts" package listed in jobs/gremlind/spec
+    touch /etc/init.d/gremlind
     chmod 755 /etc/init.d/gremlind
 }
 
