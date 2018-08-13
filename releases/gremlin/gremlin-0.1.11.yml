@@ -1,0 +1,19 @@
+name: gremlin
+version: 0.1.11
+commit_hash: 6a39ab6
+uncommitted_changes: false
+jobs:
+- name: gremlind
+  version: 532611f867300495f0ff1e460f60b712cef34bab
+  fingerprint: 532611f867300495f0ff1e460f60b712cef34bab
+  sha1: 9c7f8a0fdd4a6d116eb496a241492100704c33d7
+packages:
+- name: gremlin_init_scripts
+  version: 8145db4129b2e1eacb3fa85f487b1348d4cf8bb1
+  fingerprint: 8145db4129b2e1eacb3fa85f487b1348d4cf8bb1
+  sha1: 4254f3bf5ee75f6224e60f7ef420165042e31fc1
+  dependencies: []
+license:
+  version: c6b38ea759c1140310890c7269f30afc55301c4b
+  fingerprint: c6b38ea759c1140310890c7269f30afc55301c4b
+  sha1: 8953ea50901ada508a2ee07e50931cab3170ae81
