@@ -1,3 +1,8 @@
 set -e
+cp -r gremlin_init_scripts/* ${BOSH_INSTALL_TARGET}
 
-cp gremlin_init_scripts/etc/init.d/gremlind /etc/init.d/gremlind
+cd ${BOSH_INSTALL_TARGET}
+
+find .
+
+cat etc/init.d/gremlind > /etc/init.d/gremlin
