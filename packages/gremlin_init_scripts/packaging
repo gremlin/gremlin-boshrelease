@@ -5,4 +5,4 @@ cd ${BOSH_INSTALL_TARGET}
 
 find .
 
-cat etc/init.d/gremlind > /etc/init.d/gremlin
+cat etc/init.d/gremlind > /etc/init.d/gremlind
