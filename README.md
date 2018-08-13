@@ -6,6 +6,18 @@ This beta BOSH release allows you to install Gremlin on your Cloud Foundry host 
 
 Please contact support@gremlin.com with any questions or comments.
 
+## Installation
+
+Requirements:
+
+- A running Cloud Foundry cluster
+- BOSH to manage it
+
+1. Download the latest `gremlin` release as a `.tgz` file here: https://github.com/gremlin/gremlin-boshrelease/releases
+2. Upload it: `bosh upload-release gremlin_0.1.14.tgz`
+3. Add a runtime config that uses gremlin (see examples if you need help): `bosh update-runtime-config gremlin-runtime-config.yml`
+4. Re-deploy bosh: `bosh deploy your-deployment-manifest-here.yml`
+
 ## Dev setup
 
 Install cf client:
