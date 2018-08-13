@@ -5,8 +5,6 @@
 
 gremlindInitScript="/etc/init.d/gremlind"
 
-checkForInstaller
-
 if [[ -f "${gremlindInitScript}" ]]; then
     "${gremlindInitScript}" start
 else
