@@ -40,6 +40,8 @@ place-binaries() {
 
     # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
     setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
+    # enable networking attacks
+    setcap cap_net_admin+ep /sbin/tc
 }
 
 upload-gremlind-init-script() {
