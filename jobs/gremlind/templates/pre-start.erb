@@ -38,12 +38,16 @@ place-binaries() {
     echo Copying gremlin binaries into desired locations
     install --owner gremlin --group gremlin --mode 6111 gremlin /usr/bin/
     install --owner gremlin --group gremlin --mode 6111 gremlind /usr/sbin/
+}
 
+set-capabilities() {
     # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
     setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
+    getcap /usr/bin/gremlin
 
     # enable networking attacks
     setcap cap_net_admin+ei $(which tc)
+    getcap $(which tc)
 }
 
 upload-gremlind-init-script() {
@@ -88,5 +92,6 @@ create-user
 fetch-binaries
 place-binaries
 prepare-file-system
+set-capabilities
 upload-gremlind-init-script
 run-gremlin-init
