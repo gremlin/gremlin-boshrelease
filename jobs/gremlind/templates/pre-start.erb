@@ -43,7 +43,6 @@ place-binaries() {
 
     # enable networking attacks
     setcap cap_net_admin+ei $(which tc)
-    setcap cap_net_admin+ei /bin/ip # /sbin/ip is a symlink to this
 }
 
 upload-gremlind-init-script() {
