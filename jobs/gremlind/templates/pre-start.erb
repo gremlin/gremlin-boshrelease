@@ -66,19 +66,17 @@ create-user() {
 }
 
 prepare-file-system() {
-    mkdir -p /var/lib/gremlin
-    mkdir -p /var/log/gremlin
-    chown -R gremlin:gremlin /var/lib/gremlin
-    chown -R gremlin:gremlin /var/log/gremlin
-
     # Create the needed directories
-    mkdir -p /var/log/gremlin/executions
+    mkdir -p /var/lib/gremlin
+    chown -R gremlin:gremlin /var/lib/gremlin
+    chmod -R 770 /var/lib/gremlin
+
+    mkdir -p /var/log/gremlin
     chown -R gremlin:gremlin /var/log/gremlin
     chmod -R 775 /var/log/gremlin
 
+    mkdir -p /var/log/gremlin/executions
     mkdir -p /var/lib/gremlin/executions
-    chown -R gremlin:gremlin /var/lib/gremlin
-    chmod -R 770 /var/lib/gremlin
 
     # Set the binary to execute as the Gremlin user
     chown gremlin:gremlin /usr/bin/gremlin
