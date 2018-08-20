@@ -40,7 +40,7 @@ place-binaries() {
 
     # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
     setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
-    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
+
     # enable networking attacks
     setcap cap_net_admin+ei $(which tc)
 }
@@ -64,10 +64,6 @@ create-user() {
 
     groups gremlin | grep "gremlin.*gremlin" || usermod -a -G gremlin gremlin
     groups gremlin | grep "vcap" || usermod -a -G vcap gremlin
-
-    # Create the gremlin system user
-    #getent passwd gremlin &>/dev/null ||
-    #sudo useradd --system --user-group --home /var/lib/gremlin gremlin
 }
 
 prepare-file-system() {
