@@ -33,7 +33,7 @@ nice=""
 
 # TODO: purge this in favor of certificate-based auth
 # re-login to set up credentials
-/usr/bin/gremlin init
+/usr/bin/gremlin init $GREMLIN_HOSTTAGS
 
 # If this is set to 1, then when `stop` is called, if the process has
 # not exited within a reasonable time, SIGKILL will be sent next.
