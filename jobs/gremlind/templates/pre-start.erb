@@ -30,8 +30,8 @@ fetch-binaries() {
     #cp /var/vcap/store/gremlin/bin/* .
 
     # TODO: uncomment the below curls and stop cheating
-    curl https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
-    curl https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
+    curl -fsSL https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
+    curl -fsSL https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
 }
 
 place-binaries() {
