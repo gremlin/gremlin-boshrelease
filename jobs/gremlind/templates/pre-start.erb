@@ -42,12 +42,11 @@ place-binaries() {
 
 set-capabilities() {
     # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
-    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
-    getcap /usr/bin/gremlin
+    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin,cap_net_raw+ep /usr/bin/gremlin
 
     # enable networking attacks
-    setcap cap_net_admin+ei $(which tc)
-    getcap $(which tc)
+    setcap cap_net_admin+ei $(readlink -f $(which tc))
+    setcap cap_net_raw+ei $(readlink -f $(which ping))
 }
 
 upload-gremlind-init-script() {
