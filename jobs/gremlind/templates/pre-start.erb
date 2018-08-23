@@ -30,17 +30,23 @@ fetch-binaries() {
     #cp /var/vcap/store/gremlin/bin/* .
 
     # TODO: uncomment the below curls and stop cheating
-    curl https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
-    curl https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
+    curl -fsSL https://api.gremlin.com/v1/install/client/latest/x86_64-unknown-linux-musl -o gremlin
+    curl -fsSL https://api.gremlin.com/v1/install/daemon/latest/x86_64-unknown-linux-musl -o gremlind
 }
 
 place-binaries() {
     echo Copying gremlin binaries into desired locations
     install --owner gremlin --group gremlin --mode 6111 gremlin /usr/bin/
     install --owner gremlin --group gremlin --mode 6111 gremlind /usr/sbin/
+}
 
+set-capabilities() {
     # empower gremlin client to perform OS functions: see https://help.gremlin.com/security/#linux-capabilities
-    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin+ep /usr/bin/gremlin
+    setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin,cap_net_raw+ep /usr/bin/gremlin
+
+    # enable networking attacks
+    setcap cap_net_admin+ei $(readlink -f $(which tc))
+    setcap cap_net_raw+ei $(readlink -f $(which ping))
 }
 
 upload-gremlind-init-script() {
@@ -60,19 +66,31 @@ create-user() {
     # create only if not already created
     id -u gremlin &>/dev/null || useradd --system --user-group --home /var/lib/gremlin gremlin
 
-    groups gremlin | grep &>/dev/null "gremlin$" || usermod -aG gremlin
+    groups gremlin | grep "gremlin.*gremlin" || usermod -a -G gremlin gremlin
 }
 
 prepare-file-system() {
+    # Create the needed directories
     mkdir -p /var/lib/gremlin
-    mkdir -p /var/log/gremlin
     chown -R gremlin:gremlin /var/lib/gremlin
+    chmod -R 770 /var/lib/gremlin
+
+    mkdir -p /var/log/gremlin
     chown -R gremlin:gremlin /var/log/gremlin
+    chmod -R 775 /var/log/gremlin
+
+    mkdir -p /var/log/gremlin/executions
+    mkdir -p /var/lib/gremlin/executions
+
+    # Set the binary to execute as the Gremlin user
+    chown gremlin:gremlin /usr/bin/gremlin
+    chmod 6111 /usr/bin/gremlin
 }
 
 create-user
 fetch-binaries
 place-binaries
 prepare-file-system
+set-capabilities
 upload-gremlind-init-script
 run-gremlin-init

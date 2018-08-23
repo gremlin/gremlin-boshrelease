@@ -1,5 +1,5 @@
 VERSION=$(shell cat ./VERSION)
-RELEASE_YML = $(shell ls -t dev_releases/bosh-gremlin/bosh*yml | head -1)
+RELEASE_YML = $(shell ls -t dev_releases/gremlin/grem*yml | head -1)
 RELEASE_VERSION = $(shell echo $(RELEASE_YML) | ruby -e "puts gets.split('/').last.gsub(/.yml$$/, '').split('-').last")
 
 ver:
