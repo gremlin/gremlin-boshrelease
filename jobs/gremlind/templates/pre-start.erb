@@ -8,11 +8,14 @@ echo `date`
 # stage all gremlin env vars in a shared file for reuse in other contexts
 echo STORING GREMLIN ENV VARS IN /etc/default/gremlind | tee 
 
+DIEGO_HOST_NAME=`cat /var/vcap/instance/name`
+DIEGO_HOST_ID=`cat /var/vcap/instance/id`
+
 echo export GREMLIN_SERVICE_URL="<%= p("gremlin.service_url") %>"  >  /etc/default/gremlind
 echo export GREMLIN_TEAM_ID="<%= p("gremlin.team_id") %>"          >> /etc/default/gremlind
 echo export GREMLIN_TEAM_SECRET="<%= p("gremlin.team_secret") %>"  >> /etc/default/gremlind
 echo export GREMLIN_IDENTIFIER=`hostname` >> /etc/default/gremlind
-echo "export GREMLIN_CLIENT_TAGS=\"<%= p("gremlin.client_tags").reduce(:merge).map{ |(k,v)| "--tag #{k}=#{v}"}.join(' ') %>\"" >> /etc/default/gremlind
+echo "export GREMLIN_CLIENT_TAGS=\"<%= p("gremlin.client_tags").reduce(:merge).map{ |(k,v)| "--tag #{k}=#{v}"}.join(' ') %> --tag diego_host_name=${DIEGO_HOST_NAME} --tag diego_host_id=${DIEGO_HOST_ID}\"" >> /etc/default/gremlind
 
 # load our environment variables from previous step
 . /etc/default/gremlind
