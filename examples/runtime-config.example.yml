@@ -16,4 +16,6 @@ addons:
       service_url: https://api.gremlin.com/v1
       team_id: REDACTED-BUT-IT-LOOKS-LIKE-A-HASH
       team_secret: REDACTED-BUT-IT-LOOKS-LIKE-A-HASH
-      client_tags: []
+      client_tags:
+        - owner: gremlin_user
+        - purpose: chaos
